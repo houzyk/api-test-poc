@@ -3,7 +3,8 @@ const routes = express.Router();
 
 const dbo = require('../db/conn');
 
-routes.route('/devs').get(async (_req, res) => {
+// Get Devs
+routes.route('/devs').get((_, res) => {
   const dbConnect = dbo.getDb();
 
   dbConnect
@@ -19,6 +20,24 @@ routes.route('/devs').get(async (_req, res) => {
     });
 });
 
+// Get Dev
+routes.route('/devs/:user').get((req, res) => {
+  const dbConnect = dbo.getDb();
+
+  dbConnect
+    .collection('devs')
+    .find({ user: req.params.user  })
+    .limit(1)
+    .toArray((err, result) => {
+      if (err) {
+        res.status(400).send({ message: err.message });
+      } else {
+        res.json(result);
+      }
+    });
+});
+
+// Add Dev
 routes.route('/devs').post((req, res) => {
   const dbConnect = dbo.getDb();
   const { user, name, html_url, avatar_url, numTotalTests, numPassedTests, numFailedTests } = req.body;
@@ -45,6 +64,7 @@ routes.route('/devs').post((req, res) => {
     });
 });
 
+// Update Dev
 routes.route('/devs/:user').patch((req, res) => {
   const dbConnect = dbo.getDb();
   const { user, name, html_url, avatar_url, numTotalTests, numPassedTests, numFailedTests } = req.body;
