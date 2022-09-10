@@ -45,4 +45,33 @@ routes.route('/devs').post((req, res) => {
     });
 });
 
+routes.route('/devs/:user').patch((req, res) => {
+  const dbConnect = dbo.getDb();
+  const { user, name, html_url, avatar_url, numTotalTests, numPassedTests, numFailedTests } = req.body;
+
+  const updates = {
+    $set: {
+      user,
+      name,
+      html_url,
+      avatar_url,
+      numTotalTests,
+      numPassedTests,
+      numFailedTests
+    }
+  };
+
+  dbConnect
+  .collection('devs')
+  .updateMany({ user: req.params.user }, updates, (err, _res) => {
+      if (err) {
+        res.status(400);
+        console.error('Dev Not Updated', err);
+      } else {
+        console.log('Dev Updated');
+      }
+  });
+
+});
+
 module.exports = routes;
