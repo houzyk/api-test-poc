@@ -1,4 +1,6 @@
 # api-test-poc
 Track Jest Tests On Github Actions (Oracle)
 
-Related Repo: houzyk/client-test-poc
+Related Repos: 
+1. houzyk/client-test-poc
+2. houzyk/dashboard-test-poc
